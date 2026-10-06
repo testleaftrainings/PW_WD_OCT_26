@@ -1,0 +1,305 @@
+Session Agenda for Week2 Day2
+
+Recap   
+Functions                    
+callback Hell and promise  
+Introduction to Playwright
+Breakout
+
+Functions:
+---------
+
+A function in JavaScript is a reusable block of code used to perform a specific task and there by
+
+Avoid code repetition
+Improve readability
+
+syntax:
+-------
+
+function funName(){
+
+}
+funName()
+
+
+types of function:
+------------------
+
+1) Named function/ function declaration
+2) Function expression/Anonymous function
+3) Arrow function
+4) callback function
+
+
+Named Function:
+---------------
+
+A function consists of six main components:
+
+1. function keyword, 
+2. function name, 
+3. Parameters, 
+4. function body, 
+5. function call, 
+6. Arguments. 
+
+The function keyword declares the function, the name identifies it, parameters receive values, 
+the body contains the logic, the function call executes it, and arguments are the actual values 
+passed during execution.
+
+A function can accept all the datatypes as an argument.
+
+ex:
+----
+
+function add(num1, num2) {
+    console.log(num1 + num2);
+}
+
+add(10, 20);
+add()
+
+
+function → Function Keyword
+add → Function Name
+num1, num2 → Parameters
+{ console.log(num1 + num2); } → Function Body
+add(10, 20) → Function Call
+10, 20 → Arguments
+
+>> Diff between parameter and argument in a function.
+
+| Parameter                          | Argument                          |
+| ---------------------------------- | --------------------------------- |
+| Declared in function definition    | Passed during function call       |
+| Placeholder variable               | Actual value                      |
+| Receives data                      | Sends data                        |
+| Exists inside function declaration | Exists inside function invocation |
+
+Note: placeholder is an empty variable that waits for a value
+
+
+>> Diff between console.log() and return inside a function.
+
+| console.log()       | return                        |
+| ------------------- | ----------------------------- |
+| Prints output       | Sends value back              |
+| Function continues  | Function ends immediately     |
+| Cannot store result | Can store result              |
+| Used for debugging  | Used for actual program logic |
+| Returns undefined   | Returns specified value       |
+
+
+Function Expression:
+--------------------
+
+A Function Expression is a function that is assigned to a variable and can be called using that 
+variable name.
+
+let funexp= function(x,y){
+     return x+y   
+    }
+
+    funexp()
+
+
+Arrow Function
+--------------
+
+An Arrow Function is a concise way of writing a function using the => operator. It reduces code 
+length and is widely used in modern JavaScript, especially with callbacks and array methods
+
+
+ ex: 
+
+ let add=(x,y)=>(x+y)
+console.log(add(2,3)); //5
+
+
+Callback Function
+-----------------
+
+A callback function is a function that is passed as an argument to another function and is executed later by that function.
+
+Ex:
+
+function login(username, password, callback) {
+    console.log("Login Successful");
+    callback();
+}
+
+function takeScreenshot() {
+    console.log("Screenshot Captured");
+}
+
+login("admin", "admin123", takeScreenshot);  
+
+o/p:
+----
+
+Test Execution Completed
+Extent Report Generated
+
+
+Callback Hell:
+--------------
+
+Callback Hell is a situation where multiple asynchronous operations are nested inside callbacks, 
+creating deeply indented code that is difficult to read, maintain, and debug. 
+
+
+function first(cb) {
+  console.log("First Function")
+  cb();
+}
+
+function second(cb) {
+  console.log("Second Function")
+  cb();
+}
+
+function third() {
+  console.log("Third Function")
+}
+
+first(() => {
+  second(() => {
+    third()
+  });
+});
+
+
+//To avoid the callback- callback hell -> Promise was introduced.
+
+Promise
+--------
+
+Promise is a JavaScript object used to handle asynchronous operations (like API calls, 
+file read, timers) and gives a result in the future
+
+//syntax 
+
+let foodAvailable = false;
+
+let promise = new Promise((resolve, reject) => {
+  if (foodAvailable) {
+    resolve("food is ready");
+  } else {
+    reject("no delivery");
+  }
+});
+
+promise
+  .then(result => console.log(result)) //handel succeeds -> reslove
+  .catch(error => console.log(error))  // handles error -> reject
+
+Promise States:
+---------------
+1. Pending   -> Initial state
+2. Fulfilled -> resolve() called
+3. Rejected  -> reject() called
+
+
+Async/Await (introduced in ES2017)
+----------------------------------
+async/await was introduced in ES2017, async function always returns a Promise and await pauses 
+execution until the Promise is resolved or rejected.
+
+let foodAvailable = false;
+
+function orderFood() {
+    return new Promise((resolve, reject) => {
+
+        if (foodAvailable) {
+            resolve("Food is ready");
+        } else {
+            reject("No delivery");
+        }
+
+    });
+}
+
+async function checkFood() {
+
+    try {
+        const result = await orderFood();
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+checkFood();
+
+ex:
+
+async function data(){
+
+await page.goto("url")
+await page.locator("username").fill("demomanager")
+
+}
+
+Introduction to Playwright:
+---------------------------
+
+Playwright is an open-source browser automation framework developed by Microsoft that is 
+used to automate and test modern web applications across Chromium, Firefox, and WebKit using
+ a single API.
+
+Features 
+---------
+
+Microsoft Open Source Tool
+Cross-browser automation (Chromium, Firefox, WebKit)
+Cross-platform support (Windows, Linux, macOS)
+Auto-waiting capability
+Built-in Test Runner
+Supports multiple programming languages (JavaScript, TypeScript, Java, Python, .NET)
+API Testing support
+Mobile device emulation
+Network interception and mocking
+Screenshots and video recording
+Trace Viewer for debugging
+Multiple Browser Contexts (isolated sessions)
+Headless and Headed execution
+Automatic retries for flaky tests
+
+ Browser -> Context -> Page
+ ----------------------------
+
+Browser: Actual browser engine (Chromium, Firefox, WebKit)
+
+Context: Isolated environment like an incognito session
+
+Page: A single tab within a context
+
+const browser=await chromium.launch({headless:false,channel:"msedge"})
+const context=await browser.newContext()
+const page=await context.newPage()
+
+
+Commonly used Commands :
+------------------------
+
+To create a playwright file -> filename.spec.ts
+
+To run the test file -> npx playwright test filename.spec.ts
+
+To open the test report -> npx playwright show-report
+
+Default mode - headless
+
+Priority of execution
+----------------------
+
+1. Script Level : chromium.launch({channel:"msedge",headless:false})
+
+2. Terminal Command  :npx playwright test filename.spec.ts --project=firefox
+
+3. Configuration file(playwright.config.ts) :  projects: [{
+                                                          name: 'chromium',
+                                                           use: { ...devices['Desktop Chrome'] },
+                                                         }]
