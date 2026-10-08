@@ -1,0 +1,246 @@
+Session Agenda for Week2 Day4 : Css selectors and Dropdowns
+
+Recap                               
+Css selectors
+Dropdowns                           
+Breakout         
+
+CSS Selectors [Cascading style sheet]: 
+-------------------------------------
+CSS is used for style and design a web page
+CSS selectors are fast because browsers understand them natively and can locate elements quickly.
+
+1. By ID :
+Syntax : #idValue 
+Example : #username
+
+2. By Class :
+Syntax : .classValue
+Example : .inputLogin
+
+3. By Attribute :
+[tagName[attribute='value']]
+Example : input[id='username']
+
+4. Descendant Combinator
+A descendant combinator is used when you want to select an element 
+that is inside another element, at any level.
+parent child 
+Example : form input
+
+5. Child Combinator
+The Child Combinator is used to select an element that is a direct child of another element.
+parent > child  The > symbol is called the child combinator.
+Example : form > input
+
+6. Immediate Siblings
+The Immediate Sibling Combinator is used to select an element that comes immediately 
+after another element, at the same level in the HTML structure.
+Example: label + input
+
+7. Descendant Siblings
+Example: label ~ input
+
+-------------------------------------------------------------------------------------
+
+Attribute priority :
+-----------------------
+1️⃣ aria-label - Accessibility-based, stable, first choice
+2️⃣ id - Unique, fast
+3️⃣ name -Usually stable, not always unique
+4️⃣ class - For styling, changes often → least reliable
+
+Playwright locator methods :
+----------------------------
+
+nth(), first(), and last() are Playwright Locator API methods.
+
+They help you choose which element to act on when a locator matches multiple elements.
+
+Strict Mode Violation Error :
+-----------------------------
+When a locator matches more than one element, Playwright throws an error to prevent ambiguity.
+To fix this, use nth(), first(), or last() to specify which element you want to interact with.
+
+-------------------------------------------------------------------------------------
+Classroom Activity :
+----------------------
+
+Write a Playwright script to perform the following actions on the Salesforce login page:
+1. Navigate to the Salesforce login page.
+2. Use different CSS selector strategies (ID, Class, Attribute) to locate the username and password fields.
+3. Enter sample credentials into the username and password fields.
+4. Click the login button using a CSS selector.
+5. Verify that the login was successful by checking for a specific element on the landing page.
+
+https://login.salesforce.com/?locale=in
+Sample credentials :
+Username:yuvarani.sekar@testleaf.com
+Password: TestLeaf@2028
+
+---------------------------------------------------------------------------------------
+
+Code to Maximize Screen size: 
+-----------------------------
+
+Use in config: Applicable to all the tests in the playwright frame work.
+
+{
+      name: 'chromium',
+      use: { 
+        browserName:"chromium", 
+        viewport:null, // disable the deafult 1280x720
+        launchOptions:{
+          args:['--start-maximized'],
+        },
+      },
+    }, 
+
+or
+
+{
+  name: 'chrome',
+  use: {
+    browserName: 'chromium',
+    channel: 'chrome',
+    viewport: null, //disable the deafult viewport 1280x720
+    launchOptions: {
+      args: ['--start-maximized'],
+    },
+  },
+  }
+
+   Use in Script: custom viewport can be configured in script.
+  --------------
+
+  test.use({
+    viewport:{width:1020, height:800}
+})
+
+Dropdowns:
+----------
+A dropdown (or select menu) is a UI element that allows the user to choose one or more options 
+from a list.
+There are two main types of dropdowns in web applications:
+
+
+1. Standard / Native Dropdown
+-----------------------------
+
+A Standard (or Native) Dropdown is a dropdown list created using the HTML <select> tag and its 
+child <option> elements.
+It is called native because it's a built-in browser control — handled directly by the browser's 
+rendering engine, not by JavaScript or CSS styling.
+
+Ex:<select id="country">
+  <option value="IN">India</option>
+  <option value="US">United States</option>
+  <option value="UK">United Kingdom</option>
+</select>
+
+how to handle using build-in methods
+------------------------------------
+
+1) await page.locator('#country').selectOption('IN');
+or
+2) await page.selectOption('#country', 'IN');
+
+Key Features:
+------------
+
+Uses native HTML elements (<select>, <option>).
+Fully supported by browsers (no JavaScript required).
+Easy to automate with Playwright's selectOption().
+Supports value, label, and index attributes.
+
+1) By value attribute:
+-------------------
+The value is the hidden attribute inside the <option> tag.
+Playwright uses this when you provide a string.
+
+await page.locator('#country').selectOption({value:'US'});
+
+this seletcs:
+<option value="US">United States</option>
+
+2)By label (visible text)
+-------------------------
+
+The label refers to the display text that users see in the dropdown.
+
+await page.locator('#country').selectOption({ label: 'United Kingdom' });
+
+this selects:
+<option value="UK">United Kingdom</option>
+
+3) By index (position in the list)
+----------------------------------
+
+The index represents the zero-based position of the option.
+
+await page.locator('#country').selectOption({ index: 0 });
+
+this selects:
+<option value="IN">India</option>
+
+priority among the 3 options
+----------------------------
+Ex:
+
+
+Value → loginBtn (value of the attribute data-testid)
+Label / Visible text → Sign In
+
+Even if text changes from Sign In to Login,
+the locator still works.
+Value comes first because it is stable, unique, and reliable.
+
+Priority1: Value
+Priority2: label/visible text
+Priority3: index
+
+why value is given first priority
+---------------------------------
+this selects:
+<option value="US">United States</option>
+
+In a standard HTML form, the <option>'s value is what actually gets sent to the server when a 
+form is submitted — not the visible text.
+
+If a user selects “United States”,
+the browser actually sends → country=US
+-----------------------------------------------------------------------------------------------------------
+
+Custom / Dynamic Dropdown 
+-------------------------
+
+Handling Custom Dropdowns with click action (Built with <div>,<li <ul>)
+
+div-division
+li->list
+ul-> unordered list
+
+Example:
+<div class="dropdown">
+  <div class="option">India</div>
+  <div class="option">USA</div>
+  <div class="option">UK</div>
+</div>
+
+//open the dropdown
+await page.locator('.dropdown').click();
+
+//select the desired option
+await page.locator('.option', { hasText: 'USA' }).click();
+
+| Dropdown Type     | HTML Tag                | Playwright Method |
+| ----------------- | ----------------------- | ----------------- |
+| Standard Dropdown | `<select>`              | `selectOption()`  |
+| Custom Dropdown   | `<div>`, `<ul>`, `<li>` | `click()`         |
+
+Week 2 Feedback form
+
+https://forms.cloud.microsoft/pages/responsepage.aspx?id=eOdNgpfGe0qp5fd14FyRQwW9ctMZ6eBLgt2c6r53QAxUOFE5N0E0NEhJVjBDTjJXTk1NV0NQQkNZMy4u&route=shorturl
+
+
+
