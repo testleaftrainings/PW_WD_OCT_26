@@ -1,0 +1,358 @@
+Session Agenda for Week3 Day1 :   Assertions
+
+Assertions:
+-----------
+
+Assertions are used to verify that the application is working as expected.
+Playwright provides a set of built-in assertions that can be used to check the state of the application.
+Assertions can be used to check for the presence of elements, the text content of elements, the value
+of input fields,and more.
+ 
+types of Assertions:
+
+1) Generic Assertions : 
+----------------------
+
+Generic Assertions are used to validate simple values, variables, calculations, API response fields,
+boolean conditions, etc.
+These are immediate checks (non-retry) and do NOT depend on UI elements.
+
+Use cases:
+---------
+Comparing numbers
+Comparing strings
+Checking boolean results
+Validating object values
+Checking array lengths
+Validating API response data
+
+Common Generic Assertions
+
+1. toBe()
+
+Checks strict equality (number, boolean, etc.)
+
+expect(status).toBe("assigned");
+expect(isLoggedIn).toBe(true);
+
+2. toEqual()
+
+Checks value equality for objects or arrays
+
+expect([1, 2]).toEqual([1, 2]);
+
+3. toBeTruthy()
+
+Passes if the value is any “truthy” value.
+
+expect("hello").toBeTruthy();
+expect(1).toBeTruthy();
+
+4. toBeFalsy()
+
+Passes if the value is “falsy”.
+Falsy values: 0, null, undefined, false, “”
+
+expect("").toBeFalsy();
+expect(0).toBeFalsy();
+
+5. toBeGreaterThan()
+
+Checks if a number is greater than another.
+
+expect(10).toBeGreaterThan(5);
+
+6. toBeLessThan()
+
+Checks if a number is less than another.
+
+expect(3).toBeLessThan(10);
+
+7. toBeGreaterThanOrEqual() / toBeLessThanOrEqual()
+
+Useful for ranges.
+
+8. toContain()
+
+Checks if an array or string contains something.
+
+expect([1,2,3]).toContain(2);
+expect("playwright").toContain("write");
+
+9. toMatch()
+
+Matches a string using a regex pattern.
+
+expect("Welcome123").toMatch(/Welcome/);
+
+10. toBeNull() / toBeDefined() / toBeUndefined()
+
+State checks.
+
+expect(value).toBeNull();
+expect(name).toBeDefined();
+
+
+2. Locator Assertions:
+-----------------------
+
+Locator Assertions are used to validate the state, visibility, text, attributes, and behavior of UI
+elements in the webpage.
+
+Locator assertions are AUTO-RETRY, meaning Playwright keeps checking the condition until it becomes 
+true or times out.This makes them very reliable for dynamic UI.
+
+Use Cases of Locator Assertions 
+-------------------------------
+
+Locator Assertions are used for:
+
+Checking visibility of elements
+Verifying buttons are enabled/disabled
+Validating text content
+Checking input field values
+Ensuring elements appear/disappear
+Counting number of elements
+
+Common Locator Assertions
+--------------------------
+
+1. toBeVisible()
+
+Checks that the element is visible on the page.
+await expect(locator).toBeVisible();
+
+2. toBeHidden()
+
+Checks that the element is present but not visible.
+await expect(locator).toBeHidden();
+
+3. toBeEnabled()
+
+Checks if the element is enabled and interactive.
+await expect(button).toBeEnabled();
+
+4. toBeDisabled()
+
+Checks if the element is disabled (cannot be clicked or typed into).
+await expect(button).toBeDisabled();
+
+5. toBeEditable()
+
+Checks if an input field is editable by the user.
+await expect(input).toBeEditable();
+
+6. toHaveText()
+
+Checks for exact match of text inside an element.
+await expect(locator).toHaveText("Login Successful");
+
+7. toContainText()
+
+Checks if the element contains partial text (substring).
+await expect(locator).toContainText("Success");
+
+8. toHaveValue()
+
+Checks the value of input elements (textbox, textarea).
+await expect(input).toHaveValue("Testleaf");
+
+9. toHaveAttribute()
+
+Checks if an element has a specific attribute.
+await expect(link).toHaveAttribute("href", "/dashboard");
+
+10. toHaveCount()
+
+Checks how many elements match the locator.
+await expect(locator).toHaveCount(5);
+
+11. toBeChecked() / toBeUnchecked()
+
+Used for checkboxes, radio buttons, switches.
+await expect(checkbox).toBeChecked();
+
+Examples:
+
+Check if the login button is visible
+Verify the error message contains correct text
+Validate username field is editable
+Ensure product list displays 10 items
+Check the checkbox is selected after clicking it
+
+Locator assertions auto-retry because UI loads dynamically.
+This is why they are more stable in automation.
+
+ Generic Assertions = value checks
+ Locator Assertions = UI element check
+
+
+3. Page Assertion.
+
+Assertions made on the page object , such as URL and title.
+
+toHaveURL(url) - checks if the current page URL matches the expected URL.
+toHaveTitle() - checks if the page title matches the expected title.
+
+4. Snapshot Assertions. --> Visual Regression testing
+Snapshot assertions are used for visual regression testing by comparing the current UI screenshot 
+with a previously saved snapshot to detect visual changes from the UI perspective.
+
+5. API refernce Assertions. --> REST API 
+Assertions used check your API reponses 
+expect(response).toHaveStatus(200) // Checks if the response status code is 200
+
+Based on Functionality 
+--------------------
+
+1. Auto retry assertion.
+2. Non-retry assertion.
+
+
+Hard Assertion.--> It will abruptly stop your execution.
+Soft Assertion. --> Informing that the assertion has failed and it will not stop execution it will
+move to next part of execution.
+
+default assertion is hard assertion in playwright.
+timeout for hard assertion is 5000ms and for soft assertion is 0ms.
+we can change the default timeout for hard assertion by using below code in config file.
+expect:{    
+timeout:10000
+}
+
+-----------------------------------------------------------------------------------------------------------------------
+
+timeouts in playwright :
+----------------------
+
+1. test timeout:
+-----------------
+Timeout for a specific test execution.
+
+test.setTimeout(20000)
+
+2. assertion timeout:
+----------------------
+Timeout for assertion of a weblelement.
+
+In config file below timeout :
+expect:{
+timeout:15000
+}
+
+In script : 
+await expect(locator).toHaveText('Submit',{timeout:8000})
+
+3. Action timeout :
+--------------------
+Timeout for each and every action performed like click(), fill()
+
+In config mention under "use" :
+use:{
+actionTimeout:15000
+}
+
+In script : 
+await page.locator("#password").fill("crmsfa",{timeout:2000})
+
+4. GLobal timeout :
+-----------------------
+Implemented when we execute in pipleines.
+
+In config file under "timeout" :
+
+globalTimout : 60*60*1000
+
+
+Classroom 1:
+
+Write a Playwright test that performs the following steps:
+
+🔹 Part 1: Navigate to the page
+
+Launch Playwright test.
+
+Navigate to the page:
+https://leafground.com/input.xhtml
+
+🔹 Part 2: Validate a Disabled Textbox
+
+Locate the textbox with placeholder "Disabled".
+
+Assert that it is disabled using:
+await expect(locator).toBeDisabled()
+
+🔹 Part 3: Validate an Enabled Textbox
+
+Locate another textbox (example: the one with placeholder "Type your name").
+
+Assert that it is enabled using:
+await expect(locator).toBeEditable()
+
+Type your name into the textbox.
+
+🔹 Part 4: Soft Assertion Practice
+
+Pick a textbox that is not disabled.
+
+Use:
+await expect.soft(locator).toBeDisabled()
+
+Observe the test result and understand how soft assertions behave.
+
+🔹 Part 5: Fill Data
+
+Choose a textbox (any enabled one).
+
+Clear existing text using .fill()
+
+Enter a new value (Ex: "Playwright Learning")
+
+Playwright Locators:
+--------------------
+Playwright locators are built-in methods to find and interact with elements on a webpage. 
+They provide a more efficient and reliable way to locate elements compared to traditional methods 
+like XPaths or CSS selectors.
+
+
+Types of Playwright Locators:
+-----------------------------
+
+1) getByRole(): Uses accessibility roles to locate elements. 
+It is based on the ARIA (Accessible Rich Internet Applications) roles and is useful for finding 
+elements that have specific roles, such as buttons, links, or form controls.
+
+Ex: await page.getByRole('button', { name: 'Login' }).click()
+
+2) getByText()
+Based on visible text of the element. 
+
+Ex: await page.getByText('Login').click()
+
+3) getByLabel()
+For input fields with label
+
+Ex: await page.getByLabel('Username').fill('admin')
+
+4)getByPlaceholder()
+For input fields with placeholder attribute
+
+Ex: await page.getByPlaceholder('Enter username').fill('admin')
+
+5) getByAltText()
+For images with alt text(alternate or equivalent text) attribute.
+ It is used to locate images based on their alt text, which is a descriptive text that provides 
+ information about the image for accessibility purposes.
+
+Ex: await page.getByAltText('Company Logo').click()
+
+6)getByTitle()
+For elements with title attribute 
+
+Ex: await page.getByTitle('Submit Button').click()
+
+7) getByTestId()
+For elements with data-testid attribute, commonly used in testing frameworks to uniquely identify 
+elements. morereliable than other locators because it is less likely to change during UI updates. 
+
+Ex: await page.getByTestId('login-button').click()
