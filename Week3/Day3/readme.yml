@@ -1,0 +1,177 @@
+Session Agenda for Week3 Day3 : Codegen, storageState and TypeScript Fundamentals
+
+Codegen
+storageState
+break
+breakout
+TypeScript Fundamentals
+
+codegen:
+--------
+
+Playwright feature that records browser interactions and generates Playwright test scripts 
+automatically.
+
+command: npx playwright codegen --browser=firefox
+
+Pros:
+-----
+
+Fast
+Easy
+Automatic
+Beginner-friendly
+Time-saving
+
+Cons:
+-----
+
+Unoptimized → Inefficient code.
+Fragile → Easily breaks.
+Verbose → Lengthy code with unnecessary lines.
+Unmaintainable → Difficult to modify or debug.
+Limited → Supports only a few scenarios or features
+
+>> Difference between ARIA Snapshot and Screenshot
+
+| ARIA Snapshot          | Screenshot                          |
+| ---------------------- | ----------------------------------- |
+| Checks structure       | Checks appearance                   |
+| Stored as text         | Stored as image                     |
+| Less flaky             | Can fail due to tiny visual changes |
+| Good for accessibility | Good for visual validation          |
+
+
+storageState:
+-------------
+
+Storage State is a Playwright feature used to save and restore a browser context's authentication 
+data, such as cookies and local storage, into a JSON file. This allows tests to reuse an existing
+user session, bypass the login process, and start with an authenticated session without logging in 
+again.
+
+steps:
+------
+Stores cookies and local storage data.
+Saved as a JSON file (e.g., auth.json).
+Helps reuse authenticated sessions across tests.
+Eliminates the need to perform login repeatedly.
+Improves test execution speed and stability.
+
+Browser stores.
+ ├─ Cookies -> Used to store authentication/session information shared with the server.
+ ├─ Local Storage -> Used to store persistent client-side data across browser sessions.
+ ├─ Session Storage-> Used to store temporary tab-specific data until the tab is closed.
+
+
+// Save authenticated session
+await page.context().storageState({
+  path: 'auth.json'
+});
+
+// Reuse authenticated session
+
+(with Browser instance)
+const browser = await chromium.launch(); 
+const context = await browser.newContext({ storageState: 'user.json' });
+const page = await context.newPage();
+
+or 
+(with page fixture)
+test.use({
+  storageState: 'Data/user.json'
+});
+
+Note:Storage State is valid until the stored session cookies or auth tokens expire or become invalid.
+
+
+Typescript Basics:
+ ------------------
+
+ Typescript is a superset of JavaScript that adds static typing and other features to enhance code 
+ quality and maintainability. 
+ It compiles down to plain JavaScript, making it compatible with any environment that runs JavaScript.
+
+
+| Feature              | JavaScript (JS)                                       | TypeScript (TS)                                          |
+| -------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| **Definition**       | A scripting language used to create dynamic web pages | A superset of JavaScript developed by Microsoft          |
+| **Typing**           | Dynamically typed                                     | Statically typed (supports type checking)                |
+| **Error Detection**  | Errors appear mostly at runtime                       | Errors can be detected during compile time               |
+| **Compilation**      | Runs directly in browser                              | Must be compiled to JavaScript before running            |
+| **Code Maintenance** | Harder in large projects                              | Easier for large-scale applications                      |         
+| **Syntax**           | Simpler                                               | Slightly more structured due to types                    |
+
+
+ Installation commands
+ ---------------------
+
+// Install TypeScript globally using npm
+npm install -g typescript 
+
+
+//for Macbook.
+Sudo npm install -g typescript
+
+//to check the version of typescript installed
+tsc -v 
+or
+npx tsc -v
+
+//to install typescript locally in a project
+npm install --save-dev typescript
+
+//to initialize a TypeScript project and create a tsconfig.json file
+tsc --init 
+or 
+npx tsc --init
+
+//to compile TypeScript files to JavaScript and execute the compiled JavaScript file
+tsc filename.ts   ->compiles filename.ts to filename.js
+node filename.js   -> executes the compiled JavaScript file
+
+//to run your TypeScript file directly without compiling it to JavaScript using ts-node
+npm install -g ts-node
+
+command:
+ts-node filename.ts
+or
+npx ts-node filename.ts
+
+tsconfig.json:
+--------------
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "types": ["node"] ,
+    "resolveJsonModule": true
+  }
+}
+
+
+Type Inference: TypeScript automatically assigns the datatype based on the value assigned to variable. 
+---------------
+
+Implicit inference:
+------------------
+
+Implicit type inference means TypeScript automatically understands the data type of a variable based 
+on the value assigned to it.
+
+Ex:
+let city = "Chennai";   // inferred as string
+let count = 100;        // inferred as number
+let isActive = true;    // inferred as boolean
+
+Explicit inference:
+-------------------
+explicit type inference is when you explicitly declare the data type of a variable in TypeScript.
+
+ EX: let name: string = "Yuvarani";
+     let Id: number = 2567;
