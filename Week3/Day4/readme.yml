@@ -1,0 +1,179 @@
+Session Agenda for Week3 Day4 : TypeScript Fundamentals
+
+   Datatypes in TypeScript
+   Function     
+   break
+   Type Assertion                    
+   Object literal                       
+   Breakout 
+
+Datatypes in TypeScript 
+-----------------------
+
+1. number
+2. string
+3. boolean
+4. undefined
+5. null
+6. any 
+7. unknown
+8. never
+9. tuple
+
+number: It is used to represent both integer and floating-point numbers.
+
+string: It is used to represent text data. It can be enclosed in single quotes, double quotes, or 
+backticks.
+
+boolean: It is used to represent logical values, which can be either true or false.
+
+undefined: It is a type that represents the absence of a value. A variable that has been declared
+but not assigned a 
+value is of type undefined.
+
+null: It is a type that represents the intentional absence of any object value. It is often used to
+indicate that a variable has no value assigned to it.
+
+any: It is a type that can represent any value. used when are not sure about the datatype.
+
+ex: analyze the data from an API and we are not sure about the datatype of the response.
+let data: any = fetchDataFromAPI();
+expected output: data can be of any type, such as string, number, object, etc.
+
+unknown: It is a type that can represent any value, but it is safer than any because it requires 
+type checking before using the value.
+
+ex: let square:unknown=5
+if(typeof square === "number"){
+    console.log(square*square);
+}
+//output: 25
+
+use case:
+---------
+=> Reusable Utility Functions
+
+Suppose you're building a common logger:
+
+function logData(data: unknown) {
+
+    if (typeof data === "string") {
+        console.log(data.toUpperCase());
+    }
+}
+
+If you use any, someone can pass:
+
+logData(123);
+And it crashes.
+With unknown, framework forces validation.
+
+never: In Playwright, never is used for functions that permanently stop a test when a critical 
+failure happens.
+
+It is a type that represents values that never occur. It is used for functions that throw 
+exceptions or have infinite loops.
+
+Ex:
+function stopTest(message: string): never {
+  throw new Error(message);
+}
+
+stopTest("Login failed");
+
+
+| Type    | Meaning                                        |
+| ------- | ---------------------------------------------- |
+| `void`  | Function runs and finishes but returns nothing |
+| `never` | Function never finishes                        |
+
+ex:
+
+import { test, expect } from "@playwright/test";
+
+// A function that always stops the test
+
+function stopTest(message: string): never {
+    throw new Error(message);  // Test execution stops here
+}
+
+test("Login test with never example", async ({ page }) => {
+
+    await page.goto("http://leaftaps.com/opentaps/control/main");
+
+    const title = await page.title();
+
+    if (title !== "Login") { // when the title value is false 
+        stopTest("Login page did not load correctly"); // never
+    }
+
+    // This line runs ONLY if the title is correct
+    console.log("Test continues safely...");
+});
+
+
+tuple: It is a type that represents an array with a fixed number of elements, where each element can
+have a different type.
+ex: let person: [string, number] = ["Arun", 30];
+console.log(person[0]);//Arun
+
+
+Typescript function:
+--------------------
+
+function add(a: number, b: number): number {   // function that takes two numbers as parameters and returns a number
+  return a + b;                                //returns the sum of a and b to function
+}
+add(5, 10); // Output: 15
+
+
+Type assertion:
+---------------
+
+Type Assertion in TypeScript is a way to tell the compiler to treat a value as a specific type when 
+the developer knows the type better than the compiler.
+
+2 ways to perform type assertion:
+
+1) using angular brackets syntax
+
+let response : any = "Record from server"
+let myResponse = <string> response
+console.log(myResponse.length);
+
+
+2) using as keyword
+
+let sCode : any = "Sucess"
+let statusLength = sCode as string
+console.log(statusLength.length);
+
+Use case:
+---------
+
+A .env file is used to store environment-specific and sensitive configuration values separately 
+from the application code.
+
+Env file
+
+
+
+Object Literal:
+---------------
+
+An object literal is a direct way of creating an object using key-value pairs enclosed within curly
+braces {}
+
+object testData
+
+let testData = {
+  username: "admin",  //key:value pair
+  password: "admin123",
+  role: "QA"
+};
+
+usage:
+------
+await page.fill("#username", testData.username);
+await page.fill("#password", testData.password);
+
