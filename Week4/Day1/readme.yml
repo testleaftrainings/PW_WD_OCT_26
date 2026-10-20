@@ -1,0 +1,187 @@
+Session Agenda for Week4 Day1 :
+
+Type Alias(Union & Intersection) 
+Enum
+Breakout
+Alerts    
+
+Type Alias:
+-----------
+
+A type alias in TypeScript is a way to create a new name for an existing type. It allows you to 
+define a custom type that can be used throughout your codebase, making it easier to manage and 
+maintain complex types.
+
+type user ={
+firstname : string
+lastname : string
+mobnumber : number
+}
+
+let user1 :user ={firstname : 'sekar', lastname: 'y', mobnumber:987656778}
+let user2 :user={firstname : 'sruthi', lastname: 'r', mobnumber:807656770}
+
+
+types:
+------
+
+1. Union types
+2. Intersection types
+
+Union Types
+-----------
+
+Union Type allows a variable, parameter, or property to hold more than one type or value.
+
+type Id = string | number   
+
+let userId: Id;
+
+userId = "EMP101";   // valid
+userId = 1001;       // valid
+userId= true  //not valid
+
+console.log(userId) //1001
+
+Type Intersection
+-----------------
+
+Intersection type combines multiple types into one, meaning the value must satisfy all the types 
+together.
+
+ex:
+type User = { name: string }
+
+type Contact = { phone: number }
+
+type UserContact = User & Contact
+
+let UserContactdetails:UserContact={
+name:"Anitha",
+phone: 735808765
+}
+
+console.log(UserContactdetails.phone) //735808765
+
+
+Enum/Enumeration
+-----------------
+enum is a feature in TypeScript that allows you to define a set of named constants.
+
+enum types:
+----------
+Numeric enum(default)
+String enum
+Heterogenious enum
+
+Ex:
+enum environment{
+qa
+prod
+}
+
+let env:environment=environment.qa
+console.log(env)
+
+Classroom activity
+ -----------------
+
+ 1.Create a TypeScript program to handle different payment methods using a Union Type.
+
+- Create a function that accepts only specific payment methods.
+
+- Create a type alias called PaymentMethod that allows only "UPI", "CreditCard", or "PayPal".
+
+- Write a function makePayment that takes a parameter of type PaymentMethod and prints which payment
+  method is chosen.
+
+- Call the function with "UPI" and "CreditCard" as arguments.
+
+
+Alerts /Dialogs:
+---------------
+
+Alerts are pop-up or dialog boxes that appear on the browser to get user attention or input.
+
+types
+-----
+
+a) Modal alerts(not inspectable)
+--------------------------------
+
+A modal dialog forces the user to interact with it before returning to the application.
+
+Blocks the webpage
+Prevents interaction with background content
+Requires immediate response
+
+
+1) simple-ok
+ex: alert("Login Successful")
+
+2) confirmation-ok and cancel
+ex: confirm("Are you sure?")
+
+3) prompt-ok, cancel and input textbox
+ex: prompt("Enter your name")
+
+
+b) Non modal alerts (inspectabe)
+--------------------------------
+
+A non-modal dialog does not block the application.
+
+User can continue interacting with the page
+Can stay open while working
+
+1) Sweet-dismiss
+
+ex: Need help?,  //can be ignored.
+
+
+Syntax:
+-------
+
+page.on('dialog', async dialog => { ... }) → Listen and handle.
+
+await dialog.accept([promptText]) → Accept dialog (optionally providing input for prompts).
+await dialog.dismiss() → Cancel dialog.
+
+Event Listeners
+--------------
+An event listener is a function that waits for a specific event (like click, input, alert) and 
+executes code when that event happens.
+
+Syntax: page.on(eventName, callback) or page.once(eventName, callback)
+
+------------------------------------------------------------------------------------
+
+page.once()
+---------
+
+page.once() registers an event listener that runs only the first time the event occurs, then it 
+automatically stops listening.
+
+page.once('eventName', async (event) => {
+   // handle event
+});
+
+
+page.on()
+---------
+page.on() registers an event listener that will run every time the event occurs.
+
+//Handles all the alerts in the page.
+
+page.on('eventName', async (event) => {
+   // handle event
+});
+
+
+Classroom 2: 
+
+Launch the URL: https://www.leafground.com/alert.xhtml
+Click on Prompt Dialog.
+Switch to the JavaScript prompt alert.
+Enter a value using accept("Playwright").
+ 
