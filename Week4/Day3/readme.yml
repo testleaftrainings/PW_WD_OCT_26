@@ -1,0 +1,149 @@
+📑 Agenda for Week 4 day 03 : Window Handling
+
+Recap
+Windows
+Breakout
+
+
+Window Handling: Managing and interacting with multiple browser tabs or windows using Page objects, 
+enabling the automation script to switch and perform actions in the correct window.
+
+Window Handling using Event Listener + Promise
+----------------------------------------------
+
+Create Promise - Wait for new window(event listener)
+Trigger Action - Perform Click action
+Resolve Promise - Switch control parent → child window 
+
+
+1) Sequential Approach
+
+Handle windows one by one, waiting for each window/tab to open and complete actions before moving to
+the next.
+Simple, predictable, easy to debug.
+
+
+2) Concurrent Approach
+
+Handle multiple windows/tabs at the same time, without waiting for one to finish before starting another.
+Uses Promise.all() to run multiple operations concurrently.
+
+const [childPage] = await Promise.all([context.waitForEvent('page'),page.locator(`//div[text()="POCO C71 (Desert Gold, 
+64 GB)"]`).click()])
+
+
+Note: Concurrent Approach is Preferred in Playwright because it ensures no events are missed, 
+even when actions run fast.
+
+context.pages();
+---------------
+Returns all open pages in the context
+
+page.bringToFront()
+--------------------
+Brings a tab to the foreground and makes it the active page, but does not close it — used when 
+multiple tabs are open and you want to interact with a specific one.
+
+swtich -> child window
+
+page.close()
+------------
+
+Closes the current tab/page completely and removes it from the browser context — used when the tab 
+is no longer needed.
+
+
+Classroom Activity: Playwright Window Handling
+
+Application: https://www.leafground.com/window.xhtml
+
+Objective: Handle a single child window and interact with elements in the child page.
+Steps
+
+1. Launch the URL:
+   https://www.leafground.com/window.xhtml
+2. Handle the single window scenario.
+   - Click Open.
+   - Capture the newly opened child page.
+   - Print the title of the main page.
+   - Print the title of the child page.
+3. Switch to the child page.
+4. Inspect the Email field and enter your email address.
+5. Inspect the Message field and enter:
+   "Playwright window handling"
+
+
+
+When is bringToFront() useful?
+
+It is useful when you specifically want a page to be visually/actively focused.
+
+For example:
+
+await childPage.bringToFront();
+
+Useful scenarios include:
+
+debugging multiple tabs
+headed-mode execution where you want to see a particular tab
+scenarios involving browser-level focus
+applications where the active/foreground page matters
+making the newly opened page visually active
+
+Real-time example
+
+Suppose:
+
+Amazon
+   ↓
+Click "Payment"
+   ↓
+Payment Gateway opens in new tab
+
+You have:
+
+const [paymentPage] = await Promise.all([
+    context.waitForEvent('page'),
+    page.getByText("Payment").click()
+]);
+
+Now:
+
+Context
+│
+├── page          → Amazon
+│
+└── paymentPage   → Payment Gateway
+
+You can directly do:
+
+await paymentPage.getByLabel("Card Number").fill("123456789");
+
+No switching is required.
+
+If you want the payment tab to become the browser's active tab:
+
+await paymentPage.bringToFront();
+
+Then:
+
+Before
+
+Amazon              → active
+Payment Gateway     → background
+
+
+bringToFront()
+
+
+After
+
+Amazon              → background
+Payment Gateway     → active
+Key point to remember
+
+Page object = tells Playwright WHICH tab to operate on.
+bringToFront() = makes that tab the browser's active/foreground tab.
+
+So in normal Playwright window handling, you usually don't need bringToFront() just to interact with a child window.
+
