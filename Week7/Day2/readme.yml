@@ -1,0 +1,186 @@
+📑 Agenda for Week7 Day1 - Introduction to APIs 
+
+Introduction to API
+Salesforce API integration with Postman
+Breakout
+break
+
+1. Introduction to REST API  
+* Overview of REST architecture and principles.
+
+2. Headers  
+* Understanding HTTP headers and their significance in API requests.  
+
+3. Verbs (POST, PUT, GET, DELETE, PATCH)  
+* Explanation of HTTP methods and their use cases.  
+
+4. Request Body & Response Body  
+* Understanding the structure and purpose of request and response payloads.  
+
+5. Authorization Types  
+* Overview of different authorization methods (e.g., Basic Auth, OAuth2).
+
+6. Create record in Salesforce
+* Practical exercise- Working on creating a Lead using POST and retrieve using GET requests. 
+
+
+API → Application Programming Interface
+----------------------------------------
+
+An API (Application Programming Interface) is a mechanism that allows two software systems or 
+applications to communicate and exchange data.
+
+API Testing verifies the backend functionality by directly sending requests to APIs and 
+validating. API testing can be performed without interacting with the UI.
+
+Request
+Response
+Status code
+Response body
+Headers
+Authentication
+Data
+Business logic
+
+
+
+REST → Representational State Transfer
+---------------------------------------
+
+REST is an architectural style used for designing web services.
+REST APIs commonly use standard HTTP methods to perform CRUD operations.
+
+UI -> Customer facing interface
+API -> Middle ware 
+
+Five Steps process for API testing
+------------------------------------
+
+1. Documentation
+: Understanding the API's purpose, structure, and usempId guidelines before testing.
+Example: 
+: Reading Swagger docs that describe how the incident API works in an application.
+
+2. Endpoints: 
+: Specific URLs that represent resources or actions to be tested.
+Example: 
+:https://hostname/services/oauth2/token
+
+3. Methods: 
+: HTTP operations (GET, POST, PATCH, PUT, DELETE, etc.) that define the type of action on the 
+resource.
+Example: 
+: GET /incident → fetch incidents; POST /incident → create a new incident.
+
+4. Headers: 
+: Metadata sent with requests or responses to control and describe API behavior.
+Example: 
+Content-Type: application/json, Accept: application/json.
+
+5. Authorization: 
+: Security mechanism to verify and allow only valid users or systems to access the API.
+Example: 
+Authorization: Bearer <token> or Basic Auth with username & password.
+
+Together, these 5 steps ensure your API test covers what, where, how, and who can access the service.
+********************************************************************************************
+OAuth 2.0 (Open Authorization) is an authorization framework where an Authorization Server 
+generates access tokens to allow clients to securely access protected resources.
+
+HTTP Methods:
+-------------
+
+1) Generate Access Token
+Authenticate user and receive access token.
+
+2) Use Token in Authorization
+Pass token as Bearer token in request header.
+
+3) Create Resource
+Use POST method to create new record.
+
+4) Get Resource
+Use GET method to fetch existing record.
+
+5) Update Resource
+Use PATCH/PUT method to modify record.
+
+6) Delete Resource
+Use DELETE method to remove record.
+
+
+1) Steps to get the endpoint for oAuth token/generate access token:
+------------------------------------------------------------------
+
+Google->Salesforce OAuth endpoints->https://hostname/services/oauth2/token
+or 
+https://help.salesforce.com/s/articleView?languempId=en_US&id=xcloud.remoteaccess_oauth_endpoints.htm&type=5
+
+
+endpoint:  https://hostname/services/oauth2/token
+replace the hostname based on the environment  (Production / Developer)
+hostname=login.salesforce.com  (older one)
+hostname=orgfarm-6d28dcc693-dev-ed.develop.my.salesforce.com(mydomain name in UI-new one)
+
+
+2) Steps to get the endpoint from salesforce documentation for CRUD operations:
+
+https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_curl.htm 
+
+or
+
+Google->Salesforce Rest API with cURL->Introduction to Rest API-> Headers->Send Rest request with intro_curl->
+curl https://MyDomainName.my.salesforce.com/services/data/v65.0/sobjects/Lead
+
+replace below domain name in the endpoint
+MyDomainName(https://MyDomainName.my.salesforce.com) = https://orgfarm-6d28dcc693-dev-ed.develop.my.salesforce.com
+
+Final Endpoint= https://orgfarm-6d28dcc693-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead
+
+
+
+--------------------------------------
+Steps to find the field in salesforce :
+----------------------------------------
+
+From Salesforce Setup (Recommended)
+
+Log in to your Salesforce Developer Org.
+
+Go to Setup → Object Manager.
+
+Search for and click on Lead.
+
+Open Fields & Relationships.
+
+You will see a list of all the fields available on the Lead object.
+
+The Field Label is what you see in the UI (e.g., “Last Name”).
+
+The Field Name is what you use in the API (e.g., LastName, Company).
+
+These “Field Names” are what you should use in your JSON request body.
+
+or 
+
+path:
+-----
+login to salesforce application->settings->setup->ObjectManager->Lead->FieldsAndRelationships->view
+
+Example:
+
+{
+
+  "LastName": "VN",
+  "Company": "Testleaf",
+  "Email": "gauthami.vn@testleaf.com",
+  "Phone": "8789765426"
+}
+
+
+Classroom:
+----------
+
+Salesforce API CRUD using Postman -Create Account 
+end point for access token :https://hostname/services/oauth2/token
+end point for CRUD operations: https://MyDomainName.my.salesforce.com/services/data/v65.0/sobjects/Account

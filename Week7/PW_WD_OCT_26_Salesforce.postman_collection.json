@@ -1,0 +1,233 @@
+{
+  "info": {
+    "_postman_id": "80de2973-8361-4ffd-bb1f-777b1a40e248",
+    "name": "PW_WD_OCT_26_Salesforce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56911264",
+    "_collection_link": "https://go.postman.co/collection/56911264-80de2973-8361-4ffd-bb1f-777b1a40e248?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Generate_AccessToken",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "client_credentials"
+            },
+            {
+              "key": "client_id",
+              "value": "3MVG9dAEux2v1sLsRvdqMCBNvwP6WkblcP70V_xpRK5jeueAyURhV5.EcbUmH8rTcnkf0q2Ko.bpsQDul4vOG"
+            },
+            {
+              "key": "client_secret",
+              "value": "926CE4EE9D6F27F1C1853ACCCAEE9A2902BC98C4848C7B6CEB2B1D936D48A5DD"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://orgfarm-d716fa5b16-dev-ed.develop.my.salesforce.com/services/oauth2/token",
+          "protocol": "https",
+          "host": [
+            "orgfarm-d716fa5b16-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "oauth2",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create_Lead",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{salesforce_access_token_0ihc}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Salutation\":\"Mr\",\r\n    \"FirstName\":\"Ragu\",\r\n    \"LastName\":\"ram\",\r\n    \"Company\":\"HCL\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://orgfarm-d716fa5b16-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead",
+          "protocol": "https",
+          "host": [
+            "orgfarm-d716fa5b16-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v65.0",
+            "sobjects",
+            "Lead"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch_Lead",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{salesforce_access_token_0ihc}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://orgfarm-d716fa5b16-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead/",
+          "protocol": "https",
+          "host": [
+            "orgfarm-d716fa5b16-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v65.0",
+            "sobjects",
+            "Lead",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update_Lead",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{salesforce_access_token_0ihc}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"Company\":\"Tata\"  \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://orgfarm-d716fa5b16-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead/00QgL00000jI21RUAS",
+          "protocol": "https",
+          "host": [
+            "orgfarm-d716fa5b16-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v65.0",
+            "sobjects",
+            "Lead",
+            "00QgL00000jI21RUAS"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete_Lead",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{salesforce_access_token_0ihc}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://orgfarm-d716fa5b16-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead/00QgL00000jI21RUAS",
+          "protocol": "https",
+          "host": [
+            "orgfarm-d716fa5b16-dev-ed",
+            "develop",
+            "my",
+            "salesforce",
+            "com"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v65.0",
+            "sobjects",
+            "Lead",
+            "00QgL00000jI21RUAS"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "salesforce_access_token_0ihc",
+      "secret": true
+    }
+  ]
+}
