@@ -1,0 +1,199 @@
+Agenda for Week7 Day4 - 
+Salesforce integration with Playwright API.
+UI with API integration
+break
+breakout 
+
+Introduction to Salesforce API
+Generate Access Token
+POST Request
+GET Request
+PATCH Request
+DELETE Request
+Validate Response
+End-to-End Scenario
+
+Playwright with API:
+--------------------
+
+Request fixture:  Built-in fixture used for API testing in Playwright. It provides request context 
+to send HTTP requests and validate responses inside Playwright test cases.
+
+we can get the context information without launching the browser.
+
+APIRequestContext: used to create an isolated API session for sending HTTP requests directly to 
+backend services. It helps us perform API testing, create test data, validate responses, handle 
+authentication, and combine API testing with UI automation workflows without opening browser.
+
+
+Browser-context:
+----------------
+
+ /* test('launch browser,async()=>{
+ const browser=await chromium.launch({channel:"msedge"})
+ const context=await browser.newContext()
+ const page= await context.newPage()
+ }) 
+ 
+ replacing with page fixture
+ test('launch browser,async({page})=>{
+ })
+ */
+
+ Request fixture: API
+ --------------------
+
+ import { request } from '@playwright/test';
+
+ test('create request', async () => {
+
+    const apiContext = await request.newContext();
+
+    const response = await apiContext.get(
+        "https://api.example.com/users"
+    );
+
+});
+
+
+request.newContext()
+          |
+          ↓
+APIRequestContext
+          |
+          ↓
+GET / POST / PUT / PATCH / DELETE
+
+
+Using Playwright Built-in request Fixture
+-----------------------------------------------
+
+    test('create request ', async({request})=>{
+
+         const response = await request.get("https://api.example.com/users");
+
+    }) */
+
+
+
+
+====================================================================================================================
+1. Salesforce API integration with Playwright:
+
+Step 1:
+-------
+
+Salesforce document to get endpoint to generate access token:
+------------------------------------------------------------
+
+endpoint:https://login.salesforce.com/services/oauth2/token
+
+headers:{
+Content-Type": "application/x-www-form-urlencoded"
+//Used to send login details as key=value form data.
+},
+
+form:{
+grant_type:password
+client_id:3MVG9rZjd7MXFdLhTFd7jYNtTiu5DzDqdNCte5DvFnv7tbIspjQ9CGPizYGUq7h6T69VSmfqxT9yY2NS7tz84
+client_secret:09FE1EF4BDD93B17821073243A441F8A780A639C21D925B575C1112A3F5E0DBE
+username:gauthami.vn@testleaf.com
+password:Qeagle@123
+}
+
+
+
+Step 2:
+
+create Lead
+===========
+
+endpoint: https://orgfarm-6d28dcc693-dev-ed.develop.my.salesforce.com/services/data/v65.0/sobjects/Lead
+
+header:{
+Content-Type,
+Authorization
+}
+data:{
+}
+
+
+step 3: 
+
+Capture response ID and store globally to use it for next steps like fetch, update, delete, and UI 
+verification.
+
+step 4:
+
+Login to Salesforce UI.
+Search created Lead using Lead ID or Name.
+Use assertion to verify the status and status text.
+
+
+
+Classroom Activity:
+-------------------
+
+Write a Playwright API script to perform CRUD operations for Salesforce Account.
+
+===================================================================================================
+
+2. ServiceNow API integration with playwright
+
+
+Developer login to get the Instance URL and login credentials:
+
+
+Instance URL: https://dev400508.service-now.com
+Username: admin
+Password: h%fiR/9A5PjD
+
+Client ID: 4793d5b11a764e3880f65aec994980c4
+Client Secret: N!rz@KXSj1[6v^LtI`ZRKbXSIDD9RKaj
+
+
+Create request(post):
+---------------------
+
+http methods to use request fixture Ex: let response=await request.post()
+end point:https://dev400508.service-now.com/api/now/table/incident
+header+authentication
+data(body)
+
+
+syntax:
+-------
+
+test('create incident',async({request})=>{
+
+// serialization-converting object to json
+
+let response= await request.post('endpoint',
+
+{
+
+headers:
+{
+"Content-Type":"application/json",
+"Authorization":"Basic Auth" (can be encryt using inbuil method)
+},
+
+data:
+{
+"description":"Playwright with API"
+}
+})
+
+/* get the response and use assertions to verify it */
+
+let resbody=await response.json()   //json to object (Deserialization)
+
+})
+
+
+
+PW Oct'26 WD Batch:
+--------------------
+
+Week7 Feedback form Link: https://forms.cloud.microsoft/r/E1LGwBebjZ
+
