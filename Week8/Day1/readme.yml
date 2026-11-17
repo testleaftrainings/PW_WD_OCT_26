@@ -1,0 +1,141 @@
+Agenda for Week8 Day1 - Jira integration with Playwright
+
+Intorduction to Jira application
+Create Jira request(task or bug) in Postman
+Create Jira request using PW- API
+Breakout
+
+
+Jira is Project Management & Issue Tracking tool to organize work, track bugs, 
+and manage projects in a team to track their work
+
+Project Management-helps teams plan and organize work
+Issue Tracking tool-helps track tasks, bugs, and problems
+
+
+Jira integration
+----------------
+Documentation
+Endpoint
+Auth
+http methods
+body
+response body/status codes
+
+
+Request fixture and Axios:
+--------------------------
+
+1) We use Playwright request fixture for UI tied API's
+2) We use axios http library for independent API like Jira
+
+Playwright->Request fixture can not interact with third party libraries, so need to install axios
+axios: common api for all api calls
+
+installation command:
+npm install axios
+
+Jira credentials
+----------------
+yuvarani.sekar@testleaf.com
+
+token:ATATT3xFfGF0s3YuSqiydTkGOaaejgPxD_ZJKtlz6utpymQ3ICHRL85t9r_sKfgRPugrX-ja2uRR8lZz3Sts49JJjlKL7Qtj7HVptque7eIOtJShhcpCXYjB-2bxvrXxIeKiPOaivVpeuquW3xaGt0XQwG57sfIBGyBs6WgrRoEKirgzCRBu_EM=5CA86B43
+
+
+Steps to create Jira Account
+----------------------------
+
+1) goto website https://www.atlassian.com/software/jira
+2) click on 'Get it free' under Jira s/w
+3) you will be directed to Atlassian's sign-up page
+4) click on 'Sign up'
+5) Check your email inbox for a verification link from Atlassian and click on it
+6) Set a strong password for your Atlassian account.
+7) Once logged in, you will land on the JIRA dashboard where you can start creating projects.
+
+Steps to create project
+-----------------------
+scrum->use template->'team-managed project'->Create Project ex: PW_Jira25 and 
+click next->'Bring your team along'-click on
+ 'skip'->project is successfully created
+and listed uder 'projects' tab.
+
+
+steps to generate API Token
+---------------------------
+
+click on profile-> Account Settings->click on security tab-> scroll in this page and 
+click on Create and manage API tokens->verify your mail id by enetering OTP->
+click on create API token-> provide the Name "Jira-API -Token" and expiry for the
+ token ex:"12/27/25"-> now click on create->Copy your API token for future reference->
+click on done.
+
+
+How to take endpoint
+--------------------
+
+Generic endpoint: https://<your-domain>.atlassian.net/rest/api/2/issue
+
+
+1) From your Jira account url https://testleaf-team-ppdcho09.atlassian.net/jira/software/projects/PJN/list
+slice till "https://testleaf-team-ppdcho09.atlassian.net"
+
+2) From your swagger documentation, 
+https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post
+
+select Post(create issue)-POST  /rest/api/3/issue
+
+
+So Endpoint: "https://testleaf-team-ppdcho09.atlassian.net/rest/api/3/issue"   
+             "https://testleaf-team-ppdcho09.atlassian.net/rest/api/2/issue"  (use older version for stability)
+
+
+Classroom 1:
+-----------
+
+1) endpoint for postman:
+https://testleaf-team-qhgf7v1c.atlassian.net/rest/api/2/issue
+
+2) Authorization:
+username: yuvarani.sekar@testleaf.com
+Password: 
+ATATT3xFfGF0s3YuSqiydTkGOaaejgPxD_ZJKtlz6utpymQ3ICHRL85t9r_sKfgRPugrX-ja2uRR8lZz3Sts49JJjlKL7Qtj7HVptque7eIOtJShhcpCXYjB-2bxvrXxIeKiPOaivVpeuquW3xaGt0XQwG57sfIBGyBs6WgrRoEKirgzCRBu_EM=5CA86B43
+
+
+3) Header
+Content-Type: application/json
+
+4) body( json)
+
+{
+"fields": {
+    "project": {
+        "key": ""
+    },
+    "summary": "Bug created through Postman",
+    "description": "Page is not loaded",
+     "issuetype": {
+      "name": "Bug"
+    }
+
+
+}
+}
+
+5) Perform all crud operations using postman
+create, get, put and delete
+
+Home Assignment:
+===============
+
+create, get, put and delete request for Jira application using Playwright API.
+
+
+Simple Difference
+
+Feature	              Request Fixture	  Axios
+Comes with Playwright	  Yes	              No
+Installation Needed	      No	            Yes
+Mainly Used For	       UI tied APIs	  External APIs
+Works Independently	      No	          Yes
+Best For	            UI + API flow	  Standalone API integrations
